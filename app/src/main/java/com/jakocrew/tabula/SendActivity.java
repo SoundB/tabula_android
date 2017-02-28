@@ -41,6 +41,8 @@ public class SendActivity extends BaseActivity {
                 sendMessage(view);
             }
         });
+
+
    }
 
     private void connectWebSocket() {

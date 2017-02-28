@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,28 +23,33 @@ import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
     RoomRecyclerView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setDrawerLayout(this);
-        Intent intent = new Intent(this, TabulaService.class);
-        startService(intent);
+
 
         initUI();
+
+        Intent intent = new Intent(this,TabulaService.class);
+        intent.setAction(TabulaService.ACTION_ROOM_LIST);
+        startService(intent);
     }
 
-    public void initUI(){
+    public void initUI() {
         listView = (RoomRecyclerView) findViewById(R.id.list_room);
 
         ArrayList<RoomInfo> arrayList = new ArrayList<>();
-        for(int i=0; i<10; i++){
+        for (int i = 0; i < 10; i++) {
             arrayList.add(new RoomInfo());
         }
 
         listView.setListData(arrayList);
 
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -53,8 +59,6 @@ public class MainActivity extends BaseActivity {
             super.onBackPressed();
         }
     }
-
-
 
 
 }

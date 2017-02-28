@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
+import com.jakocrew.tabula.services.TabulaService;
+
 
 public class SplashActivity extends Activity {
     /** 로딩 화면이 떠있는 시간(밀리초단위)  **/
@@ -18,6 +20,9 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        Intent intent = new Intent(this, TabulaService.class);
+        startService(intent);
 
         /* SPLASH_DISPLAY_LENGTH 뒤에 메뉴 액티비티를 실행시키고 종료한다.*/
         new Handler().postDelayed(new Runnable(){
