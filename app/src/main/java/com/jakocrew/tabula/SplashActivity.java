@@ -13,7 +13,7 @@ import android.widget.EditText;
 
 public class SplashActivity extends Activity {
     /** 로딩 화면이 떠있는 시간(밀리초단위)  **/
-    private final int SPLASH_DISPLAY_LENGTH = 1000;
+    private final int SPLASH_DISPLAY_LENGTH = 3000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

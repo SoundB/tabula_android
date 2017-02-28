@@ -14,10 +14,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.jakocrew.tabula.data.RoomInfo;
+import com.jakocrew.tabula.list.RoomRecyclerView;
 import com.jakocrew.tabula.services.TabulaService;
 
-public class MainActivity extends BaseActivity {
+import java.util.ArrayList;
 
+public class MainActivity extends BaseActivity {
+    RoomRecyclerView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,8 +29,21 @@ public class MainActivity extends BaseActivity {
         setDrawerLayout(this);
         Intent intent = new Intent(this, TabulaService.class);
         startService(intent);
+
+        initUI();
     }
 
+    public void initUI(){
+        listView = (RoomRecyclerView) findViewById(R.id.list_room);
+
+        ArrayList<RoomInfo> arrayList = new ArrayList<>();
+        for(int i=0; i<10; i++){
+            arrayList.add(new RoomInfo());
+        }
+
+        listView.setListData(arrayList);
+
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
