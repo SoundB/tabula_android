@@ -30,6 +30,8 @@ public class TabulaService extends Service {
     // 브로드캐스트 퍼미션
     public static final String PERMISSION_FOR_BROADCAST = "com.jakocrew.tabula.services.BROADCAST_ALLOW";
     public static final String ACTION_ROOM_LIST = ServicePackage + "ACTION_ROOM_LIST";
+    public static final String ACTION_CREATE_ROOM = ServicePackage + "ACTION_CREATE_ROOM";
+
     private WebSocketClient mWebSocketClient;
 
     public TabulaService() {
@@ -41,9 +43,10 @@ public class TabulaService extends Service {
         Log.d("TabulaService","onCreate");
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(TabulaService.ACTION_ROOM_LIST);
+        intentFilter.addAction(TabulaService.ACTION_CREATE_ROOM);
         registerReceiver(actionRecevier, intentFilter, PERMISSION_FOR_BROADCAST, null);
 
-//        connectWebSocket();
+        connectWebSocket();
     }
 
     @Override
@@ -57,6 +60,10 @@ public class TabulaService extends Service {
         Log.d("TabulaService","onStartCommand");
         if(ACTION_ROOM_LIST.equalsIgnoreCase(intent.getAction())){
             Log.d("TabulaService","ACTION_ROOM_LIST");
+            actionRoomList();
+        } else if(ACTION_CREATE_ROOM.equalsIgnoreCase(intent.getAction())){
+            String roomName = intent.getStringExtra("ROOM_NAME");
+            actionCreateRoom(roomName);
         }
         return super.onStartCommand(intent, flags, startId);
     }
@@ -75,20 +82,10 @@ public class TabulaService extends Service {
             Log.d("TabulaService","onReceive");
             if(ACTION_ROOM_LIST.equalsIgnoreCase(intent.getAction())){
                 Log.d("onReceive","ACTION_ROOM_LIST");
-
-                try {
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("scene","lounge");
-                    jsonObject.put("command","roomList");
-                    jsonObject.put("id","민시기");
-
-                    mWebSocketClient.send(jsonObject.toString());
-
-                    Log.d("send Message ",jsonObject.toString());
-                }catch (Exception e){
-
-                }
-
+                actionRoomList();
+            }else if(ACTION_CREATE_ROOM.equalsIgnoreCase(intent.getAction())){
+                String roomName = intent.getStringExtra("ROOM_NAME");
+                actionCreateRoom(roomName);
             }
         }
     };
@@ -126,6 +123,34 @@ public class TabulaService extends Service {
             }
         };
         mWebSocketClient.connect();
+    }
+
+
+    private void actionRoomList() {
+        Log.d("onReceive", "ACTION_ROOM_LIST");
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("scene", "lounge");
+            jsonObject.put("command", "roomList");
+            jsonObject.put("id", "민시기");
+            mWebSocketClient.send(jsonObject.toString());
+            Log.d("send Message ", jsonObject.toString());
+        } catch (Exception e) {
+        }
+    }
+
+    private void actionCreateRoom(String roomName) {
+        Log.d("TabulaService", "actionCreateRoom"+roomName);
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("scene", "lounge");
+            jsonObject.put("command", "roomList");
+            jsonObject.put("id", "민시기");
+            mWebSocketClient.send(jsonObject.toString());
+            Log.d("send Message ", jsonObject.toString());
+        } catch (Exception e) {
+        }
     }
 
 }
